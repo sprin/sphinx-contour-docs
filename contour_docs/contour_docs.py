@@ -13,6 +13,7 @@ import urllib
 from docutils import nodes, utils
 
 CONTOUR_DOC_FORMAT = 'https://www.contourhosted.com/perspective.req?projectId={project_id}&docId={doc_id}'
+LINK_TEXT_FORMAT = 'Contour Item {doc_id}'
 
 def contour_doc(name, rawtext, text, lineno, inliner, options={},
     content=[]):
@@ -29,7 +30,8 @@ def contour_doc(name, rawtext, text, lineno, inliner, options={},
      project_id = project_id,
      doc_id = urllib.quote(text, safe=''),
     )
-    node = nodes.reference(rawtext, utils.unescape(text), refuri=ref, **options)
+    link_text = LINK_TEXT_FORMAT.format(doc_id=utils.unescape(text))
+    node = nodes.reference(rawtext, link_text, refuri=ref, **options)
     return [node],[]
 
 # Register the :contour: directive
